@@ -20,4 +20,16 @@ function draw() {
     cell.move();
     cell.show();
   }
-}  
+}
+
+function mousePressed() {
+  for (let i = 0; i < cells.length; i++) {
+    const cell = cells[i];
+    if (cell.clicked(mouseX, mouseY)) {
+      cells.push(cell.mitosis());
+      cells.push(cell.mitosis());
+      // cells.splice(i, 1);
+    }
+    
+  }
+}
