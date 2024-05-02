@@ -22,6 +22,12 @@ function draw() {
   }
 }
 
+function keyPressed() {
+  if (key === 'r') {
+    restart();
+  }
+}
+
 function mousePressed() {
   for (let i = 0; i < cells.length; i++) {
     const cell = cells[i];
@@ -31,5 +37,13 @@ function mousePressed() {
       // cells.splice(i, 1);
     }
     
+  }
+}
+
+function restart() {
+  cells = [];
+
+  for (let i = 0; i < numOfCells; i++) {
+    cells.push(new Cell());
   }
 }

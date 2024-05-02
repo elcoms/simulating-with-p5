@@ -7,17 +7,22 @@ function Cell(pos, r, vel, c) {
     this.color = c || color(random(150, 255), random(150, 255), random(150, 255), 100);
 
     this.move = function () {
-        this.pos.add(this.vel);
-
         if (this.pos.x > width || this.pos.y > height
             || this.pos.x < 0 || this.pos.y < 0) {
-            this.vel = p5.Vector.random2D();
+            this.vel.mult(-1);
+            this.pos.add(this.vel);
         }
+
+        this.pos.add(this.vel);
+
+        stroke(this.color);
+        strokeWeight(5);
+        line(this.pos.x, this.pos.y, this.pos.x + this.vel.x * 10, this.pos.y + this.vel.y * 10);
     }
 
     this.show = function () {
         fill(this.color);
-        noStroke();
+        // noStroke();
         ellipse(this.pos.x, this.pos.y, this.radius, this.radius);
     }
 
@@ -28,7 +33,7 @@ function Cell(pos, r, vel, c) {
     }
 
     this.mitosis = function () {
-        var cell = new Cell(this.pos, this.radius / 2, this.vel * 2, this.color);
+        var cell = new Cell(this.pos, this.radius / 2, p5.Vector.random2D().mult(this.vel.mag()*1.5), this.color);
         return cell;
     }
 }
