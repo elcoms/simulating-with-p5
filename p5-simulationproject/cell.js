@@ -2,9 +2,9 @@ function Cell(pos, r, vel, c) {
 
     
     this.pos = pos ? pos.copy() : createVector(random(width), random(height));
-    this.radius = r || 50;
+    this.radius = r || 80;
     this.vel = vel || p5.Vector.random2D();
-    this.color = c || color(random(150, 255), random(150, 255), random(150, 255), 100);
+    this.color = c || color(random(150, 255), random(150, 255), random(150, 255), 150);
 
     this.move = function () {
         if (this.pos.x > width || this.pos.y > height
@@ -22,7 +22,7 @@ function Cell(pos, r, vel, c) {
 
     this.show = function () {
         fill(this.color);
-        // noStroke();
+        noStroke();
         ellipse(this.pos.x, this.pos.y, this.radius, this.radius);
     }
 

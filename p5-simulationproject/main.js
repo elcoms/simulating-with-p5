@@ -1,9 +1,9 @@
 var cells = [];
-var numOfCells = 3;
+var numOfCells = 10;
 
 function setup() {
- createCanvas(400, 400);
- 
+  createCanvas(450, 800);
+  background('rgba(65%, 85%, 95%, 0.5)');
   for (let i = 0; i < numOfCells; i++) {
     cells.push(new Cell());
   }
@@ -12,7 +12,7 @@ function setup() {
 }
 
 function draw() {
-  background(51);
+  background('rgba(25%, 55%, 75%, 0.5)');
 
   for (let i = 0; i < cells.length; i++) {
     const cell = cells[i];
