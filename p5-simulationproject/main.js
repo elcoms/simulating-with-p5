@@ -5,11 +5,12 @@ var bgColor;
 function setup() {
   createCanvas(450, 800);
 
-  bgColor = color(random(150, 255), random(150, 255), random(150, 255), 150);
+  bgColor = color(random(50, 200), random(50, 200), random(50, 200), 150);
   // background('rgba(65%, 85%, 95%, 0.5)');
   background(bgColor);
 
   for (let i = 0; i < numOfCells; i++) {
+    let newVelocity = p5.Vector.random2D();
     cells.push(new Cell());
   }
 
@@ -24,6 +25,26 @@ function draw() {
     
     cell.move();
     cell.show();
+
+    updateCollision();
+  }
+}
+
+function updateCollision() {
+  for (let i = 0; i < cells.length; i++) {
+    const cellA = cells[i];
+    
+    for (let j = 0; j < cells.length; j++) {
+      const cellB = cells[j];
+      
+      if (cellA != cellB) {
+        if(cellA.isColliding(cellB.pos, cellB.radius)) {
+          // push cells away from each other
+          cellA.addForce();
+          cellB.addForce();
+        }
+      }
+    }
   }
 }
 
