@@ -1,9 +1,14 @@
 var cells = [];
 var numOfCells = 10;
+var bgColor;
 
 function setup() {
   createCanvas(450, 800);
-  background('rgba(65%, 85%, 95%, 0.5)');
+
+  bgColor = color(random(150, 255), random(150, 255), random(150, 255), 150);
+  // background('rgba(65%, 85%, 95%, 0.5)');
+  background(bgColor);
+
   for (let i = 0; i < numOfCells; i++) {
     cells.push(new Cell());
   }
@@ -12,7 +17,7 @@ function setup() {
 }
 
 function draw() {
-  background('rgba(25%, 55%, 75%, 0.5)');
+  background(bgColor);
 
   for (let i = 0; i < cells.length; i++) {
     const cell = cells[i];
@@ -42,8 +47,5 @@ function mousePressed() {
 
 function restart() {
   cells = [];
-
-  for (let i = 0; i < numOfCells; i++) {
-    cells.push(new Cell());
-  }
+  setup();
 }
