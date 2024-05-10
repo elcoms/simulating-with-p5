@@ -2,6 +2,7 @@ var cells = [];
 var numOfCells = 10;
 var bgColor;
 var particle;
+var pause = false;
 
 function setup() {
   createCanvas(450, 800);
@@ -22,11 +23,18 @@ function setup() {
 }
 
 function draw() {
+
+  if (pause)
+    return;
+  
   background(bgColor);
   ellipse(particle.position.x, particle.position.y, particle.radius, particle.radius);
 
   for (let i = 0; i < cells.length; i++) {
     const cell = cells[i];
+
+    if (cell.life <= 0)
+      cells.splice(i, 1);
     
     cell.move();
     cell.show();
@@ -47,6 +55,18 @@ function updateCollision() {
           // push cells away from each other
           cellA.addForce();
           cellB.addForce();
+
+          if (cellA.color != cellB.color) {
+            let newCell = cellA.mitosis(cellB);
+            if (newCell) {
+                cells.push(newCell);
+
+                if (cellA.radius > cellB.radius)
+                  cells.splice(i, 1);
+                else if (cellA.radius < cellB.radius)
+                  cells.splice(j, 1);
+              }
+          }
         }
       }
     }
@@ -54,8 +74,14 @@ function updateCollision() {
 }
 
 function keyPressed() {
-  if (key === 'r') {
-    restart();
+  switch (key) {
+    case 'r':
+      restart();
+      break;
+      case 'p':
+      pause = !pause;
+    default:
+      break;
   }
 }
 

@@ -1,19 +1,27 @@
 function Cell(pos, r, vel, c) {
 
-    
     this.pos = pos ? pos.copy() : createVector(random(width), random(height));
     this.radius = r || 40;
-    this.vel = vel || p5.Vector.random2D().mult(5);
+    this.vel = vel || p5.Vector.random2D().mult(2);
     this.color = c || color(random(150, 255), random(150, 255), random(150, 255), 150);
+
+    this.life = 2;
+
+    var mitosisCooldown = true;
+    var mitosisCooldownTimeInMS = 1000;
+
+    setTimeout(enableMitosis, mitosisCooldownTimeInMS);
 
     this.move = function () {
         if (this.pos.x > width || this.pos.y > height
             || this.pos.x < 0 || this.pos.y < 0) {
             this.vel.mult(-1);
             this.pos.add(this.vel);
+            this.radius *= 1.2;
         }
 
         this.pos.add(this.vel);
+        this.radius += this.vel.mag()/100;
 
         stroke(this.color);
         strokeWeight(5);
@@ -34,8 +42,19 @@ function Cell(pos, r, vel, c) {
         else { return false; }
     }
 
-    this.mitosis = function () {
-        var cell = new Cell(this.pos, this.radius / 2, p5.Vector.random2D().mult(this.vel.mag()*1.5), this.color);
+    this.mitosis = function (otherCell) {
+        if (mitosisCooldown)
+            return null;
+
+        var cell = new Cell(
+            p5.Vector.div(p5.Vector.add(this.pos, otherCell.pos), 2),
+            this.radius / 2,
+            p5.Vector.random2D().mult((this.vel.mag()+otherCell.vel.mag()+1)/2),
+            this.color);
+
+        mitosisCooldown = true;
+        setTimeout(enableMitosis, mitosisCooldownTimeInMS);
+        this.life--;
         return cell;
     }
 
@@ -51,5 +70,9 @@ function Cell(pos, r, vel, c) {
     this.addForce = function (pushForce) {
         this.vel.mult(-1);
         this.pos.add(this.vel);
+    }
+
+    function enableMitosis() {
+        mitosisCooldown = false;
     }
 }
